@@ -9,29 +9,47 @@ A lightweight macOS menu bar app that kills the `DictationIM` process with a sin
 - **Right-click** the icon for a menu with Quit
 - No Dock icon — runs as a background accessory app
 
-## Requirements
+## Install
 
-- macOS with Xcode Command Line Tools (`xcode-select --install`)
+### Option 1: Download the Release (recommended)
 
-## Build & Install
+1. Go to [Releases](https://github.com/scrappydog/osx-reset-dictation/releases/latest)
+2. Download `ResetDictation.zip`
+3. Unzip and drag `ResetDictation.app` to your Applications folder (or `~/Applications`)
+4. Launch the app — you'll see a 🎤 in your menu bar
+
+> **Note:** On first launch, macOS may block the app because it's unsigned. Go to **System Settings → Privacy & Security** and click **Open Anyway**.
+
+### Option 2: Build from Source
+
+Requires Xcode Command Line Tools (`xcode-select --install`).
 
 ```bash
-# Compile
-swiftc ResetDictation.swift -o ResetDictation
-
-# Create app bundle
-mkdir -p ~/Applications/ResetDictation.app/Contents/MacOS
-cp ResetDictation ~/Applications/ResetDictation.app/Contents/MacOS/
-cp Info.plist ~/Applications/ResetDictation.app/Contents/
-
-# Launch
+git clone https://github.com/scrappydog/osx-reset-dictation.git
+cd osx-reset-dictation
+make install
 open ~/Applications/ResetDictation.app
 ```
 
+## Usage
+
+| Action | Result |
+|--------|--------|
+| Left-click 🎤 | Kills `DictationIM` and shows a confirmation toast |
+| Right-click 🎤 | Opens menu with Quit option |
+
 ## Start at Login
 
-Add `~/Applications/ResetDictation.app` in **System Settings → General → Login Items** to launch automatically on login.
+To launch automatically on login, add `ResetDictation.app` in **System Settings → General → Login Items**.
+
+## Uninstall
+
+```bash
+make uninstall
+```
+
+Or manually delete `ResetDictation.app` from your Applications folder and remove it from Login Items.
 
 ## License
 
-MIT
+[MIT](LICENSE)
