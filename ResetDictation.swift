@@ -3,6 +3,7 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
     let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
     var toastWindow: NSWindow?
+    var dismissTimer: Timer?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         statusItem.button?.title = "🎤"
@@ -33,46 +34,58 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func showToast() {
-        toastWindow?.close()
+        dismissTimer?.invalidate()
+        dismissTimer = nil
+        toastWindow?.orderOut(nil)
+        toastWindow = nil
 
         guard let button = statusItem.button,
               let buttonWindow = button.window else { return }
 
         let buttonRect = buttonWindow.frame
-        let label = NSTextField(labelWithString: "Dictation Reset")
-        label.font = NSFont.systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .white
-        label.sizeToFit()
 
         let padding: CGFloat = 16
-        let width = label.frame.width + padding * 2
         let height: CGFloat = 32
+        let text = "Dictation Reset"
+
+        let label = NSTextField(labelWithString: text)
+        label.font = NSFont.systemFont(ofSize: 12, weight: .medium)
+        label.textColor = .white
+        label.backgroundColor = .clear
+        label.isBezeled = false
+        label.isEditable = false
+        label.sizeToFit()
+
+        let width = label.frame.width + padding * 2
         let x = buttonRect.midX - width / 2
         let y = buttonRect.minY - height - 4
 
         let window = NSWindow(contentRect: NSRect(x: x, y: y, width: width, height: height),
                               styleMask: .borderless, backing: .buffered, defer: false)
-        window.backgroundColor = .clear
+        window.backgroundColor = NSColor.black.withAlphaComponent(0.8)
         window.isOpaque = false
         window.level = .statusBar
+        window.hasShadow = true
+        window.isReleasedWhenClosed = false
 
-        let view = NSVisualEffectView(frame: window.contentView!.bounds)
-        view.material = .hudWindow
-        view.state = .active
-        view.wantsLayer = true
-        view.layer?.cornerRadius = 8
-        view.layer?.masksToBounds = true
-        window.contentView = view
+        let contentView = NSView(frame: NSRect(x: 0, y: 0, width: width, height: height))
+        contentView.wantsLayer = true
+        contentView.layer?.cornerRadius = 8
+        contentView.layer?.masksToBounds = true
+        contentView.layer?.backgroundColor = NSColor.black.withAlphaComponent(0.8).cgColor
+        window.contentView = contentView
 
-        label.frame = NSRect(x: padding, y: (height - label.frame.height) / 2, width: label.frame.width, height: label.frame.height)
-        view.addSubview(label)
+        label.frame = NSRect(x: padding, y: (height - label.frame.height) / 2,
+                             width: label.frame.width, height: label.frame.height)
+        contentView.addSubview(label)
 
         window.orderFront(nil)
         toastWindow = window
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
-            self?.toastWindow?.close()
+        dismissTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { [weak self] _ in
+            self?.toastWindow?.orderOut(nil)
             self?.toastWindow = nil
+            self?.dismissTimer = nil
         }
     }
 }
