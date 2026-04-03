@@ -13,9 +13,9 @@ A lightweight macOS menu bar app that kills the `DictationIM` process with a sin
 
 ### Option 1: Download the Release (recommended)
 
-1. Go to [Releases](https://github.com/scrappydog/osx-reset-dictation/releases/latest)
-2. Download `ResetDictation.zip`
-3. Unzip and drag `ResetDictation.app` to your Applications folder (or `~/Applications`)
+1. Go to [Releases](https://github.com/scrappydog-software/osx-reset-dictation/releases/latest)
+2. Download `ResetDictation.dmg`
+3. Open the DMG and drag `ResetDictation.app` to the Applications folder
 4. Launch the app — you'll see a 🎤 in your menu bar
 
 > **Note:** On first launch, macOS may block the app because it's unsigned. Go to **System Settings → Privacy & Security** and click **Open Anyway**.
@@ -25,7 +25,7 @@ A lightweight macOS menu bar app that kills the `DictationIM` process with a sin
 Requires Xcode Command Line Tools (`xcode-select --install`).
 
 ```bash
-git clone https://github.com/scrappydog/osx-reset-dictation.git
+git clone https://github.com/scrappydog-software/osx-reset-dictation.git
 cd osx-reset-dictation
 make install
 open ~/Applications/ResetDictation.app

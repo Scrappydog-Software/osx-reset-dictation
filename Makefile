@@ -22,8 +22,12 @@ uninstall:
 	@echo "Uninstalled $(BUNDLE)"
 
 clean:
-	rm -rf $(APP_NAME) $(BUNDLE)
+	rm -rf $(APP_NAME) $(BUNDLE) $(APP_NAME).dmg
 
 release: build
-	ditto -c -k --keepParent $(BUNDLE) $(APP_NAME).zip
-	@echo "Created $(APP_NAME).zip"
+	mkdir -p dmg-staging
+	cp -R $(BUNDLE) dmg-staging/
+	ln -sf /Applications dmg-staging/Applications
+	hdiutil create -volname "$(APP_NAME)" -srcfolder dmg-staging -ov -format UDZO $(APP_NAME).dmg
+	rm -rf dmg-staging
+	@echo "Created $(APP_NAME).dmg"
