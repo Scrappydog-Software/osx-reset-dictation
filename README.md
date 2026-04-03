@@ -18,7 +18,11 @@ A lightweight macOS menu bar app that kills the `DictationIM` process with a sin
 3. Open the DMG and drag `ResetDictation.app` to the Applications folder
 4. Launch the app — you'll see a 🎤 in your menu bar
 
-> **Note:** On first launch, macOS may block the app because it's unsigned. Go to **System Settings → Privacy & Security** and click **Open Anyway**.
+> **Note:** If macOS says the app is "damaged" or blocks it, remove the quarantine flag:
+> ```bash
+> xattr -cr /Applications/ResetDictation.app
+> ```
+> Or go to **System Settings → Privacy & Security** and click **Open Anyway**.
 
 ### Option 2: Build from Source
 

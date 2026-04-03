@@ -9,6 +9,7 @@ build:
 	mkdir -p $(BUNDLE)/Contents/MacOS
 	cp $(APP_NAME) $(BUNDLE)/Contents/MacOS/
 	cp Info.plist $(BUNDLE)/Contents/
+	codesign --force --sign - $(BUNDLE)
 	@echo "Built $(BUNDLE)"
 
 install: build
